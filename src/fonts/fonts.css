@@ -1,0 +1,23 @@
+/* Permanent Marker - Para titulares */
+@font-face {
+  font-family: 'Permanent Marker';
+  src: url('./Permanent_Marker/PermanentMarker-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Playwrite NZ Basic - Para textos generales */
+@font-face {
+  font-family: 'Playwrite NZ Basic';
+  src: url('./Playwrite_NZ_Basic/PlaywriteNZBasic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Variables CSS para las fuentes */
+:root {
+  --font-heading: 'Permanent Marker', cursive;
+  --font-body: 'Playwrite NZ Basic', sans-serif;
+}

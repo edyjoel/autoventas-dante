@@ -1,0 +1,207 @@
+---
+
+---
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="container">
+      <div class="hero-info">
+        <h1 class="hero-title">Encuentra tu Vehículo Ideal</h1>
+        <p class="hero-description">
+          Descubre nuestra amplia selección de vehículos usados de calidad. Los
+          mejores precios y financiamiento a tu medida.
+        </p>
+        <a href="/vehiculos" class="hero-button">Ver Modelos</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="/images/hero-car.png" alt="Vehículo destacado" />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 4rem 0;
+  }
+
+  .hero-info {
+    max-width: 600px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-family: var(--font-heading);
+    color: var(--color-text-primary);
+    margin-bottom: 2rem;
+    line-height: 1.1;
+    max-width: 400px;
+  }
+
+  .hero-description {
+    font-size: 1.125rem;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    max-width: 400px;
+  }
+
+  .hero-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-button);
+    outline: none;
+  }
+
+  .hero-button:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+
+  .hero-button:hover {
+    filter: brightness(1.1);
+    box-shadow: var(--shadow-button-hover);
+    transform: translateY(-2px);
+    color: var(--color-text-white) !important;
+  }
+
+  .hero-image {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 60%;
+    max-width: 900px;
+    pointer-events: none;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .hero-image {
+      width: 55%;
+      max-width: 700px;
+    }
+
+    .hero-info {
+      max-width: 500px;
+    }
+  }
+
+  @media (max-width: 968px) {
+    .hero {
+      min-height: 500px;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-image {
+      width: 50%;
+      max-width: 500px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: auto;
+      flex-direction: column;
+      padding: 3rem 0 2rem;
+    }
+
+    .hero-content {
+      padding: 0;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-info {
+      max-width: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.9) 100%
+      );
+      padding: 2rem 1.5rem;
+      border-radius: 20px;
+    }
+
+    .hero-title {
+      max-width: 100%;
+      color: var(--color-text-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-description {
+      margin-bottom: 1.5rem;
+      color: var(--color-text-primary);
+      max-width: 100%;
+      font-weight: 400;
+    }
+
+    .hero-button {
+      padding: 0.875rem 2rem;
+      font-size: 0.9375rem;
+    }
+
+    .hero-image {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 2rem auto 0;
+      right: auto;
+      top: auto;
+      transform: none;
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .hero-image img {
+      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      padding: 2rem 0 1.5rem;
+    }
+
+    .hero-info {
+      padding: 1.5rem 1rem;
+      border-radius: 15px;
+    }
+
+    .hero-image {
+      max-width: 400px;
+      margin-top: 1.5rem;
+    }
+  }
+</style>

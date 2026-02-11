@@ -1,23 +1,32 @@
-/* Permanent Marker - Para titulares */
+/* Gotham Medium - Para títulos y elementos destacados */
 @font-face {
-  font-family: 'Permanent Marker';
-  src: url('./Permanent_Marker/PermanentMarker-Regular.ttf') format('truetype');
-  font-weight: normal;
+  font-family: "Gotham";
+  src: url("./Gotham/Gotham Medium/Gotham Medium.otf") format("opentype");
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
-/* Playwrite NZ Basic - Para textos generales */
+/* Roboto Light - Para encabezados principales, subtítulos y textos */
 @font-face {
-  font-family: 'Playwrite NZ Basic';
-  src: url('./Playwrite_NZ_Basic/PlaywriteNZBasic-VariableFont_wght.ttf') format('truetype');
-  font-weight: 100 400;
+  font-family: "Roboto";
+  src: url("./Roboto/static/Roboto-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto Regular - Para textos generales */
+@font-face {
+  font-family: "Roboto";
+  src: url("./Roboto/static/Roboto-Regular.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 /* Variables CSS para las fuentes */
 :root {
-  --font-heading: 'Permanent Marker', cursive;
-  --font-body: 'Playwrite NZ Basic', sans-serif;
+  --font-heading: "Gotham", sans-serif;
+  --font-body: "Roboto", sans-serif;
 }

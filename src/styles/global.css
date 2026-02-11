@@ -3,30 +3,70 @@
   box-sizing: border-box;
 }
 
+/* Color System - Variables CSS */
+:root {
+  /* Colores principales - Paleta de diseño */
+  --color-primary: #e60d2e;
+  --color-primary-dark: #910016;
+  --color-primary-light: #ff1a3d;
+  --color-primary-lighter: #ff4d68;
+
+  /* Colores de fondo */
+  --color-bg-dark: #221f22;
+  --color-bg-light: #ffffff;
+  --color-bg-gray: #e4e4ea;
+  --color-bg-overlay: rgba(0, 0, 0, 0.5);
+  --color-bg-overlay-gradient: rgba(0, 0, 0, 0.3);
+
+  /* Colores de texto */
+  --color-text-primary: #221f22;
+  --color-text-secondary: #666666;
+  --color-text-white: #ffffff;
+
+  /* Colores de interfaz */
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border-light: rgba(255, 255, 255, 0.3);
+  --color-hover: rgba(230, 13, 46, 0.1);
+
+  /* Sombras */
+  --shadow-button: 0 10px 30px rgba(230, 13, 46, 0.3);
+  --shadow-button-hover: 0 15px 40px rgba(230, 13, 46, 0.5);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  color: #1a1a1a;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-light);
   line-height: 1.6;
   font-family: var(--font-body);
 }
 
-main {
-  flex: 1;
-}
-
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   font-weight: 600;
   line-height: 1.2;
@@ -50,15 +90,31 @@ p {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+  outline: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+a:hover {
+  color: var(--color-primary) !important;
 }
 
 /* Utility classes */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
 }
 
 /* Responsive typography */

@@ -24,15 +24,17 @@ const currentYear = new Date().getFullYear();
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; {currentYear} Autoventas Dante. Todos los derechos reservados.</p>
+      <p>
+        &copy; {currentYear} Autoventas Dante. Todos los derechos reservados.
+      </p>
     </div>
   </div>
 </footer>
 
 <style>
   footer {
-    background-color: #1a1a1a;
-    color: white;
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
     padding: 2rem 0 1rem;
     margin-top: auto;
   }
@@ -54,12 +56,10 @@ const currentYear = new Date().getFullYear();
   .footer-section h4 {
     margin-top: 0;
     margin-bottom: 1rem;
-    color: #4a9eff;
   }
 
   .footer-section p {
     margin: 0.5rem 0;
-    color: #ccc;
   }
 
   .social-links {
@@ -69,24 +69,17 @@ const currentYear = new Date().getFullYear();
   }
 
   .social-links a {
-    color: white;
     text-decoration: none;
-    transition: color 0.3s;
-  }
-
-  .social-links a:hover {
-    color: #4a9eff;
+    color: inherit;
   }
 
   .footer-bottom {
-    border-top: 1px solid #333;
     padding-top: 1rem;
     text-align: center;
   }
 
   .footer-bottom p {
     margin: 0;
-    color: #999;
     font-size: 0.9rem;
   }
 

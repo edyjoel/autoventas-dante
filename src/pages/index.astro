@@ -1,6 +1,45 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
+
+const models = [
+  {
+    name: "Toyota Corolla 2021",
+    description:
+      "Sedán confiable con mantenimiento al día y sistema híbrido eficiente.",
+    price: "$18,900",
+    kilometers: "48,500 km",
+    image:
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Honda Civic Touring 2020",
+    description:
+      "Deportivo y cómodo, con asistencias de manejo y techo panorámico.",
+    price: "$20,500",
+    kilometers: "36,200 km",
+    image:
+      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Mazda CX-5 2019",
+    description:
+      "SUV premium con interior en cuero, ideal para familias y viajes largos.",
+    price: "$23,400",
+    kilometers: "52,800 km",
+    image:
+      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    name: "Kia Sportage 2022",
+    description:
+      "Tecnología avanzada, cámara 360° y garantía vigente de fábrica.",
+    price: "$25,100",
+    kilometers: "18,900 km",
+    image:
+      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
+  },
+];
 ---
 
 <Layout
@@ -8,4 +47,580 @@ import Hero from "../components/Hero.astro";
   description="Encuentra los mejores vehículos en Autoventas Dante"
 >
   <Hero />
+  <section id="modelos" class="models-section" aria-labelledby="models-title">
+    <div class="container models-layout">
+      <aside class="models-filters" aria-label="Filtros de búsqueda">
+        <div class="filters-header">
+          <h2 class="filters-title">Filtrar modelos</h2>
+          <button type="button" class="filters-clear button-reset"
+            >Limpiar</button
+          >
+        </div>
+        <form class="filters-form">
+          <label class="filters-label">
+            Marca
+            <select class="filters-select">
+              <option value="">Todas</option>
+              <option value="toyota">Toyota</option>
+              <option value="honda">Honda</option>
+              <option value="mazda">Mazda</option>
+              <option value="kia">Kia</option>
+            </select>
+          </label>
+          <label class="filters-label">
+            Año
+            <select class="filters-select">
+              <option value="">Todos</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+          </label>
+          <label class="filters-label">
+            Tipo de vehículo
+            <select class="filters-select">
+              <option value="">Todos</option>
+              <option value="sedan">Sedán</option>
+              <option value="suv">SUV</option>
+              <option value="pickup">Pickup</option>
+            </select>
+          </label>
+          <label class="filters-label price-filter">
+            <span>Rango de precio</span>
+            <div class="price-range">
+              <div
+                class="range-value"
+                data-price-value
+                role="status"
+                aria-live="polite"
+              >
+                $25,000
+              </div>
+              <input
+                type="range"
+                class="price-range-input"
+                id="price-range"
+                name="price"
+                min="10000"
+                max="40000"
+                step="1000"
+                value="25000"
+              />
+              <div class="range-scale">
+                <span>$10k</span>
+                <span>$40k</span>
+              </div>
+            </div>
+          </label>
+          <button type="submit" class="filters-submit">Aplicar filtros</button>
+        </form>
+      </aside>
+
+      <div class="models-content">
+        <div class="models-header">
+          <div>
+            <p class="eyebrow">Inventario destacado</p>
+            <h2 id="models-title" class="models-title">Modelos disponibles</h2>
+            <p class="models-description">
+              Explora las unidades listas para entrega inmediata con garantía
+              certificada.
+            </p>
+          </div>
+        </div>
+
+        <ul class="models-grid" role="list" aria-label="Lista de modelos">
+          {
+            models.map((model) => (
+              <li class="models-grid-item">
+                <a href="/vehiculos" class="model-card">
+                  <div class="model-image">
+                    <img
+                      src={model.image}
+                      alt={`Imagen de ${model.name}`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="model-body">
+                    <div class="model-content">
+                      <h3 class="model-name">{model.name}</h3>
+                      <p class="model-description">{model.description}</p>
+                    </div>
+                    <div class="model-footer">
+                      <div class="model-meta">
+                        <div>
+                          <span>Precio</span>
+                          <strong>{model.price}</strong>
+                        </div>
+                        <div>
+                          <span>Kilómetros</span>
+                          <strong>{model.kilometers}</strong>
+                        </div>
+                      </div>
+                      <span class="model-link">Ver detalles</span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<script>
+  const priceRange = document.querySelector("#price-range");
+  const priceValue = document.querySelector("[data-price-value]");
+
+  const priceFormatter = new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
+
+  const updateRangeFill = () => {
+    if (!(priceRange instanceof HTMLInputElement)) return;
+    const min = Number(priceRange.min);
+    const max = Number(priceRange.max);
+    const value = Number(priceRange.value);
+    const percentage = ((value - min) / (max - min)) * 100;
+    priceRange.style.background = `linear-gradient(90deg, var(--color-primary) ${percentage}%, rgba(0, 0, 0, 0.15) ${percentage}%)`;
+    if (priceValue) {
+      priceValue.textContent = priceFormatter.format(value);
+    }
+  };
+
+  updateRangeFill();
+  priceRange?.addEventListener("input", updateRangeFill);
+</script>
+
+<style>
+  .models-section {
+    padding: var(--space-10) 0;
+    scroll-margin-top: calc(var(--header-height) + 24px);
+  }
+
+  .models-layout {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    gap: var(--space-8);
+    align-items: flex-start;
+  }
+
+  .models-filters {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-lg);
+    padding: var(--space-7);
+    border: 1px solid rgba(34, 31, 34, 0.08);
+    backdrop-filter: blur(14px);
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-6));
+  }
+
+  .filters-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+  }
+
+  .filters-title {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .filters-clear {
+    color: var(--color-primary);
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .filters-clear:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
+    border-radius: 999px;
+  }
+
+  .filters-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .filters-label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .price-filter span:first-child {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .price-range {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .range-value {
+    font-size: 1rem;
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+  }
+
+  .price-range-input {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--color-primary) 50%,
+      rgba(0, 0, 0, 0.1) 50%
+    );
+    outline: none;
+    transition: background 0.3s ease;
+  }
+
+  .price-range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: var(--shadow-button);
+    cursor: pointer;
+    border: 3px solid var(--color-bg-light);
+  }
+
+  .price-range-input::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 3px solid var(--color-bg-light);
+    box-shadow: var(--shadow-button);
+    cursor: pointer;
+  }
+
+  .price-range-input::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-border);
+  }
+
+  .range-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .range-scale span {
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+  }
+
+  .filters-select {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    background-color: var(--color-bg-light);
+    outline: none;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .filters-select:focus-visible {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(230, 13, 46, 0.15);
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+
+  .filters-submit {
+    margin-top: var(--space-2);
+    display: inline-block;
+    padding: 0.9rem 2.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 31, 34, 0.12);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: none;
+    outline: none;
+  }
+
+  .filters-submit:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+
+  .filters-submit:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 20px rgba(230, 13, 46, 0.12);
+    transform: translateY(-2px);
+    color: var(--color-primary);
+  }
+
+  .models-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--radius-xl);
+    padding: var(--space-7);
+    border: 1px solid rgba(34, 31, 34, 0.08);
+    backdrop-filter: blur(18px);
+  }
+
+  .models-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--space-6);
+    margin-bottom: var(--space-7);
+  }
+
+  .models-title {
+    margin: 0.25rem 0 0;
+  }
+
+  .models-description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-weight: 300;
+  }
+
+  .models-header .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    align-items: stretch;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .models-grid-item {
+    margin: 0;
+    display: flex;
+  }
+
+  .model-card {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(34, 31, 34, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    transition:
+      transform 0.3s ease,
+      border-color 0.3s ease,
+      background 0.3s ease;
+  }
+
+  .model-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(230, 13, 46, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .model-image {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background-color: var(--color-bg-light);
+  }
+
+  .model-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 70% 30%,
+      rgba(230, 13, 46, 0.35),
+      rgba(230, 13, 46, 0)
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .model-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+  }
+
+  .model-card:hover .model-image::after {
+    opacity: 0.9;
+  }
+
+  .model-card:hover .model-image img {
+    transform: scale(1.05);
+  }
+
+  .model-body {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1;
+    height: 100%;
+  }
+
+  .model-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .model-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .model-name {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+  }
+
+  .model-description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    font-weight: 300;
+  }
+
+  .model-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    align-items: flex-start;
+  }
+
+  .model-meta > div {
+    flex: 1;
+  }
+
+  .model-meta span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+  }
+
+  .model-meta strong {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+  }
+
+  .model-meta > div:first-child strong {
+    color: var(--color-primary);
+  }
+
+  .model-meta > div:last-child strong {
+    font-weight: 300;
+  }
+
+  .model-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) 1.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(230, 13, 46, 0.2);
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .model-link::after {
+    content: "→";
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  .model-card:hover .model-link {
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-button);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+
+  .model-card:hover .model-link::after {
+    transform: translateX(4px);
+  }
+
+  .model-card:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 1100px) {
+    .models-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .models-filters {
+      position: static;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .models-section {
+      padding: var(--space-9) 0;
+    }
+
+    .models-content,
+    .models-filters {
+      padding: var(--space-6);
+    }
+
+    .models-header {
+      flex-direction: column;
+    }
+  }
+</style>

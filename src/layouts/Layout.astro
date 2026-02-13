@@ -5,29 +5,93 @@ import "../styles/global.css";
 import "../fonts/fonts.css";
 
 interface Props {
-	title?: string;
-	description?: string;
+  title?: string;
+  description?: string;
 }
 
-const { title = "Autoventas Dante", description = "Tu mejor opción en vehículos de calidad" } = Astro.props;
+const {
+  title = "Autoventas Dante",
+  description = "Tu mejor opción en vehículos de calidad",
+} = Astro.props;
+
+const ogImage = "/images/hero/hero-car.png";
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : null;
+const ogImageUrl = Astro.site
+  ? new URL(ogImage, Astro.site).toString()
+  : ogImage;
 ---
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="description" content={description} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<slot />
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={"#e60d2e"} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+
+    {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    {canonicalUrl ? <meta property="og:url" content={canonicalUrl} /> : null}
+    <meta property="og:image" content={ogImageUrl} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <a
+      href="https://wa.me/1234567890?text=Hola%20Autoventas%20Dante"
+      class="whatsapp-fab"
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label="Chatea por WhatsApp"
+    >
+      <img
+        src="/icons/whatsapp.svg"
+        alt=""
+        width="28"
+        height="28"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+  </body>
 </html>
 
+<style>
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-light);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    z-index: 2000;
+  }
+
+  .skip-link:focus {
+    left: var(--space-4);
+    top: var(--space-4);
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+</style>

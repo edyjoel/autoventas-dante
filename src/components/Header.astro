@@ -2,30 +2,57 @@
 
 ---
 
-<header>
-  <div class="container">
+<header class="site-header">
+  <div class="container header-inner">
     <div class="logo">
-      <a href="/">Autoventas Dante</a>
+      <a class="logo-link" href="/">Autoventas Dante</a>
     </div>
-    <button class="hamburger" aria-label="Menú" aria-expanded="false">
+    <button
+      class="hamburger"
+      type="button"
+      aria-label="Menú"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+    >
       <span></span>
       <span></span>
       <span></span>
     </button>
-    <nav>
-      <ul>
-        <li><a href="/">Inicio</a></li>
-        <li><a href="/vehiculos">Vehículos</a></li>
-        <li><a href="/servicios">Servicios</a></li>
-        <li><a href="/contacto">Contacto</a></li>
+    <nav id="primary-nav" class="site-nav" aria-label="Navegación principal">
+      <ul class="site-nav-list">
+        <li class="site-nav-item">
+          <a class="site-nav-link" href="/#hero" data-target="#hero">Inicio</a>
+        </li>
+        <li class="site-nav-item">
+          <a class="site-nav-link" href="/#modelos" data-target="#modelos"
+            >Modelos</a
+          >
+        </li>
+        <li class="site-nav-item">
+          <a class="site-nav-link" href="/#contacto" data-target="#contacto"
+            >Contacto</a
+          >
+        </li>
       </ul>
     </nav>
   </div>
 </header>
 
 <script>
+  /** @type {HTMLButtonElement | null} */
   const hamburger = document.querySelector(".hamburger");
-  const nav = document.querySelector("nav");
+  /** @type {HTMLElement | null} */
+  const nav = document.querySelector(".site-nav");
+  /** @type {HTMLElement | null} */
+  const header = document.querySelector(".site-header");
+
+  const toggleHeaderShadow = () => {
+    if (!header) return;
+    header.classList.toggle("scrolled", window.scrollY > 0);
+  };
+
+  toggleHeaderShadow();
+  window.addEventListener("scroll", toggleHeaderShadow, { passive: true });
 
   hamburger?.addEventListener("click", () => {
     const isExpanded = hamburger.getAttribute("aria-expanded") === "true";
@@ -33,29 +60,90 @@
     hamburger.classList.toggle("active");
     nav?.classList.toggle("active");
   });
+
+  /** @type {HTMLAnchorElement[]} */
+  const navLinks = Array.from(
+    document.querySelectorAll(".site-nav a[data-target]"),
+  );
+
+  const sections = navLinks
+    .map((link) =>
+      document.querySelector(link.getAttribute("data-target") || ""),
+    )
+    .filter((section) => section instanceof HTMLElement);
+
+  if (sections.length) {
+    const SCROLL_OFFSET = 100;
+
+    const handleScrollSpy = () => {
+      const scrollPosition = window.scrollY + SCROLL_OFFSET;
+      let currentSection = sections[0];
+
+      sections.forEach((section) => {
+        if (section.offsetTop - SCROLL_OFFSET <= scrollPosition) {
+          currentSection = section;
+        }
+      });
+
+      if (!currentSection) return;
+
+      const targetId = `#${currentSection.id}`;
+      const matchingLink = navLinks.find(
+        (link) => link.getAttribute("data-target") === targetId,
+      );
+
+      if (!matchingLink) return;
+
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link === matchingLink);
+        if (link === matchingLink) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    handleScrollSpy();
+    window.addEventListener("scroll", handleScrollSpy, { passive: true });
+    window.addEventListener("resize", handleScrollSpy);
+  }
 </script>
 
 <style>
-  header {
+  .site-header {
     background-color: var(--color-bg-light);
     color: var(--color-text-primary);
     padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1100;
+    box-shadow: none;
+    transition: box-shadow 0.3s ease;
   }
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+  .site-header.scrolled {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .header-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 2rem;
   }
 
-  .logo a {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: inherit;
+  .logo-link {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    display: inline-flex;
+    align-items: center;
   }
 
   .hamburger {
@@ -90,7 +178,7 @@
     transform: rotate(-45deg) translate(7px, -7px);
   }
 
-  nav ul {
+  .site-nav-list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -98,13 +186,11 @@
     gap: 2rem;
   }
 
-  nav a {
-    text-decoration: none;
+  .site-nav-link {
     color: inherit;
-    transition: color 0.3s ease;
   }
 
-  nav a:hover {
+  .site-nav-link.active {
     color: var(--color-primary);
   }
 
@@ -113,13 +199,13 @@
       display: flex;
     }
 
-    nav {
+    .site-nav {
       position: fixed;
-      top: 0;
+      top: var(--header-height);
       right: -100%;
       width: 70%;
       max-width: 300px;
-      height: 100vh;
+      height: calc(100vh - var(--header-height));
       background-color: var(--color-bg-light);
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
       transition: right 0.3s ease;
@@ -127,21 +213,21 @@
       padding-top: 5rem;
     }
 
-    nav.active {
+    .site-nav.active {
       right: 0;
     }
 
-    nav ul {
+    .site-nav-list {
       flex-direction: column;
       gap: 0;
       padding: 1rem;
     }
 
-    nav li {
+    .site-nav-item {
       border-bottom: 1px solid var(--color-border);
     }
 
-    nav a {
+    .site-nav-link {
       display: block;
       padding: 1rem;
     }

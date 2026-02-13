@@ -11,6 +11,9 @@
   --color-primary-light: #ff1a3d;
   --color-primary-lighter: #ff4d68;
 
+  /* Layout */
+  --header-height: 80px;
+
   /* Colores de fondo */
   --color-bg-dark: #221f22;
   --color-bg-light: #ffffff;
@@ -33,6 +36,35 @@
   --shadow-button-hover: 0 15px 40px rgba(230, 13, 46, 0.5);
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.1);
   --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+  /* Radius scale (prefer rem for sizing) */
+  --radius-sm: 0.75rem; /* 12px */
+  --radius-md: 1.25rem; /* 20px */
+  --radius-lg: 1.75rem; /* 28px */
+  --radius-xl: 2.25rem; /* 36px */
+
+  /* Spacing scale (prefer rem for spacing) */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-7: 2rem; /* 32px */
+  --space-8: 2.5rem; /* 40px */
+  --space-9: 3rem; /* 48px */
+  --space-10: 4rem; /* 64px */
+
+  /* Component sizing (use tokens for consistent layout) */
+  --hero-min-height: 37.5rem; /* 600px */
+  --hero-min-height-md: 31.25rem; /* 500px */
+  --hero-image-max: 56.25rem; /* 900px */
+  --hero-image-max-lg: 43.75rem; /* 700px */
+  --hero-image-max-md: 31.25rem; /* 500px */
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -58,6 +90,15 @@ body {
   background-color: var(--color-bg-light);
   line-height: 1.6;
   font-family: var(--font-body);
+  padding-top: var(--header-height);
+}
+
+footer {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-primary);
+  padding: var(--space-7) 0 var(--space-4);
+  margin-top: auto;
+  scroll-margin-top: calc(var(--header-height) + 24px);
 }
 
 /* Typography */
@@ -112,9 +153,67 @@ a:hover {
 
 /* Utility classes */
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 var(--space-6);
+}
+
+.button-reset {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.whatsapp-fab {
+  position: fixed;
+  bottom: var(--space-7);
+  right: var(--space-7);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #25d366;
+  color: var(--color-text-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  z-index: 1200;
+}
+
+.whatsapp-fab:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 20px 45px rgba(37, 211, 102, 0.45);
+  color: var(--color-text-white) !important;
+}
+
+.whatsapp-fab:focus-visible {
+  outline: 3px solid rgba(37, 211, 102, 0.5);
+  outline-offset: 4px;
+}
+
+.whatsapp-fab img {
+  width: 36px;
+  height: 36px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+@media (max-width: 600px) {
+  .whatsapp-fab {
+    bottom: var(--space-5);
+    right: var(--space-5);
+    width: 56px;
+    height: 56px;
+  }
 }
 
 /* Responsive typography */

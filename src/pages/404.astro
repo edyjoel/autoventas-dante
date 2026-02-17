@@ -1,0 +1,57 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Página no encontrada - Autoventas Dante"
+  description="La página que buscas no existe o ha sido movida."
+>
+  <section class="page-centered">
+    <div class="container">
+      <div class="page-card">
+        <div class="page-icon" aria-hidden="true">
+          <svg
+            width="80"
+            height="80"
+            viewBox="0 0 80 80"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="40"
+              cy="40"
+              r="38"
+              stroke="currentColor"
+              stroke-width="4"
+              opacity="0.2"></circle>
+            <path
+              d="M40 20L40 45"
+              stroke="currentColor"
+              stroke-width="4"
+              stroke-linecap="round"></path>
+            <circle cx="40" cy="56" r="3" fill="currentColor"></circle>
+            <path
+              d="M25 60L40 20L55 60"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              opacity="0.15"></path>
+          </svg>
+        </div>
+
+        <h1 class="page-title">Página no encontrada</h1>
+        <p class="page-description">
+          Lo sentimos, la página que buscas no existe o ha sido movida. Te
+          invitamos a explorar nuestros modelos disponibles.
+        </p>
+
+        <div class="page-actions">
+          <a href="/" class="page-button"> IR AL INICIO </a>
+        </div>
+
+        <a href="/#modelos" class="page-link">Ver modelos disponibles →</a>
+      </div>
+    </div>
+  </section>
+</Layout>

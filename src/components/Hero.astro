@@ -11,7 +11,7 @@
           Descubre nuestra amplia selección de vehículos usados de calidad. Los
           mejores precios y financiamiento a tu medida.
         </p>
-        <a href="/#modelos" class="hero-button">Ver Modelos</a>
+        <a href="/#modelos" class="hero-button page-button">VER MODELOS</a>
       </div>
     </div>
   </div>
@@ -66,29 +66,7 @@
   }
 
   .hero-button {
-    display: inline-block;
-    padding: var(--space-4) var(--space-8);
-    background-color: var(--color-primary);
-    color: var(--color-text-white);
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 999px;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-button);
-    outline: none;
-  }
-
-  .hero-button:focus-visible {
-    outline: 3px solid var(--color-primary-light);
-    outline-offset: 2px;
-  }
-
-  .hero-button:hover {
-    filter: brightness(1.1);
-    box-shadow: var(--shadow-button-hover);
-    transform: translateY(-2px);
-    color: var(--color-text-white) !important;
+    /* Hereda estilos de .page-button en global.css */
   }
 
   .hero-image {

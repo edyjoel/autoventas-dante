@@ -113,7 +113,7 @@ const models = [
               </div>
             </div>
           </label>
-          <button type="submit" class="filters-submit">Aplicar filtros</button>
+          <button type="submit" class="filters-submit">APLICAR FILTROS</button>
         </form>
       </aside>
 
@@ -158,7 +158,7 @@ const models = [
                           <strong>{model.kilometers}</strong>
                         </div>
                       </div>
-                      <span class="model-link">Ver detalles</span>
+                      <span class="model-link">VER DETALLES</span>
                     </div>
                   </div>
                 </a>
@@ -355,18 +355,18 @@ const models = [
   .filters-submit {
     margin-top: var(--space-2);
     display: inline-block;
-    padding: 0.9rem 2.25rem;
-    border-radius: 999px;
-    border: 1px solid rgba(34, 31, 34, 0.12);
-    background: rgba(255, 255, 255, 0.85);
+    padding: var(--space-4) var(--space-8);
+    background-color: transparent;
     color: var(--color-primary);
     font-family: var(--font-heading);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 500;
-    cursor: pointer;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 31, 34, 0.08);
     transition: all 0.3s ease;
     box-shadow: none;
     outline: none;
+    cursor: pointer;
   }
 
   .filters-submit:focus-visible {
@@ -375,11 +375,11 @@ const models = [
   }
 
   .filters-submit:hover {
-    background: rgba(255, 255, 255, 0.95);
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
     border-color: var(--color-primary);
-    box-shadow: 0 8px 20px rgba(230, 13, 46, 0.12);
+    box-shadow: var(--shadow-button);
     transform: translateY(-2px);
-    color: var(--color-primary);
   }
 
   .models-content {

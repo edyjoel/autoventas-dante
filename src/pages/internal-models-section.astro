@@ -1,0 +1,1132 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const vehicle = {
+  name: "Toyota Corolla 2021",
+  shortDescription:
+    "Sedán confiable, económico y con historial de mantenimiento completo.",
+  description:
+    "Unidad en excelente estado mecánico y estético, ideal para ciudad y carretera. Incluye cámara de reversa, asistencias de manejo y documentación al día para entrega inmediata.",
+  price: "$18,900",
+  kilometers: "48,500 km",
+  location: "Tegucigalpa, HN",
+  gallery: [
+    {
+      src: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1400&q=80",
+      alt: "Vista frontal del Toyota Corolla 2021",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80",
+      alt: "Vista lateral del Toyota Corolla 2021",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80",
+      alt: "Parte trasera del Toyota Corolla 2021",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1400&q=80",
+      alt: "Interior del Toyota Corolla 2021",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1400&q=80",
+      alt: "Tablero y volante del Toyota Corolla 2021",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1400&q=80",
+      alt: "Detalle del frente del Toyota Corolla 2021",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1400&q=80",
+      alt: "Vista lateral trasera del Toyota Corolla 2021",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1400&q=80",
+      alt: "Asientos traseros del Toyota Corolla 2021",
+    },
+  ],
+  specs: [
+    ["Marca", "Toyota"],
+    ["Modelo", "Corolla"],
+    ["Año", "2021"],
+    ["Motor", "1.8L Híbrido"],
+    ["Transmisión", "Automática CVT"],
+    ["Combustible", "Híbrido"],
+    ["Color", "Blanco Perla"],
+    ["Tracción", "Delantera"],
+  ],
+};
+
+const whatsappMessage = encodeURIComponent(
+  `Hola, me interesa el ${vehicle.name}. ¿Está disponible?`,
+);
+const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
+---
+
+<Layout
+  title={`${vehicle.name} - Autoventas Dante`}
+  description={`Detalles, galería y ficha técnica de ${vehicle.name}.`}
+>
+  <section class="vehicle-page">
+    <div class="container vehicle-container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item">
+            <a class="breadcrumb-link" href="/">Inicio</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a class="breadcrumb-link" href="/#modelos">Modelos</a>
+          </li>
+          <li class="breadcrumb-item" aria-current="page">{vehicle.name}</li>
+        </ol>
+      </nav>
+
+      <header class="vehicle-header" aria-labelledby="vehicle-title">
+        <h1 id="vehicle-title" class="vehicle-title">
+          {vehicle.name}
+        </h1>
+        <p class="vehicle-subtitle">{vehicle.shortDescription}</p>
+      </header>
+
+      <div class="vehicle-main">
+        <section
+          class="vehicle-gallery-column"
+          aria-label="Galería del vehículo"
+        >
+          <div class="gallery-slider" data-gallery-slider>
+            <div class="gallery-main-frame">
+              <img
+                class="gallery-main-image"
+                src={vehicle.gallery[0].src}
+                alt={vehicle.gallery[0].alt}
+                loading="eager"
+                decoding="async"
+              />
+              <button
+                class="gallery-expand button-reset"
+                type="button"
+                aria-label="Expandir imagen"
+              >
+                ⤢
+              </button>
+              <button
+                class="gallery-nav gallery-nav-prev button-reset"
+                type="button"
+                aria-label="Imagen anterior"
+              >
+                ‹
+              </button>
+              <button
+                class="gallery-nav gallery-nav-next button-reset"
+                type="button"
+                aria-label="Imagen siguiente"
+              >
+                ›
+              </button>
+            </div>
+
+            <div
+              class="gallery-thumbnails"
+              role="tablist"
+              aria-label="Miniaturas del vehículo"
+            >
+              {
+                vehicle.gallery.map((image, index) => (
+                  <button
+                    class="thumbnail-button"
+                    type="button"
+                    role="tab"
+                    aria-selected={index === 0 ? "true" : "false"}
+                    aria-label={`Ver imagen ${index + 1}`}
+                    data-image-src={image.src}
+                    data-image-alt={image.alt}
+                  >
+                    <img
+                      class="thumbnail-image"
+                      src={image.src}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </button>
+                ))
+              }
+            </div>
+
+            <div
+              class="gallery-lightbox"
+              data-gallery-lightbox
+              role="dialog"
+              aria-modal="true"
+              aria-label="Galería ampliada del vehículo"
+              tabindex="-1"
+              hidden
+            >
+              <div class="lightbox-content">
+                <button
+                  class="lightbox-close button-reset"
+                  type="button"
+                  aria-label="Cerrar galería"
+                >
+                  ✕
+                </button>
+                <button
+                  class="lightbox-nav lightbox-nav-prev button-reset"
+                  type="button"
+                  aria-label="Imagen anterior"
+                >
+                  ‹
+                </button>
+                <img
+                  class="lightbox-image"
+                  src={vehicle.gallery[0].src}
+                  alt={vehicle.gallery[0].alt}
+                  loading="eager"
+                  decoding="async"
+                />
+                <button
+                  class="lightbox-nav lightbox-nav-next button-reset"
+                  type="button"
+                  aria-label="Imagen siguiente"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="vehicle-description-block">
+            <h2 class="section-title">Descripción</h2>
+            <p class="vehicle-description">{vehicle.description}</p>
+          </div>
+        </section>
+
+        <aside
+          class="vehicle-side-panel"
+          aria-label="Información principal del vehículo"
+        >
+          <section class="price-card">
+            <h2 class="section-title">Precio y kilometraje</h2>
+            <div class="price-row">
+              <div class="price-item">
+                <span class="price-label">Precio</span>
+                <strong class="price-value">
+                  {vehicle.price}
+                </strong>
+              </div>
+              <div class="price-item">
+                <span class="price-label">Kilometraje</span>
+                <strong class="price-value">{vehicle.kilometers}</strong>
+              </div>
+            </div>
+            <p class="vehicle-location">Ubicación: {vehicle.location}</p>
+            <a
+              href={whatsappLink}
+              class="whatsapp-contact"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Contactar por WhatsApp
+            </a>
+          </section>
+
+          <section class="specs-card" aria-labelledby="specs-title">
+            <h2 id="specs-title" class="section-title">Ficha técnica</h2>
+            <dl class="specs-grid">
+              {
+                vehicle.specs.map(([label, value]) => (
+                  <div class="spec-item">
+                    <dt class="spec-label">{label}</dt>
+                    <dd class="spec-value">{value}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </section>
+
+          <section class="form-card" aria-labelledby="form-title">
+            <h2 id="form-title" class="section-title">Solicitar información</h2>
+            <form class="vehicle-form">
+              <label class="form-label" for="name">Nombre completo</label>
+              <input
+                class="form-input"
+                id="name"
+                name="name"
+                type="text"
+                required
+              />
+
+              <label class="form-label" for="phone">Teléfono</label>
+              <input
+                class="form-input"
+                id="phone"
+                name="phone"
+                type="tel"
+                required
+              />
+
+              <label class="form-label" for="message">Mensaje</label>
+              <textarea
+                class="form-textarea"
+                id="message"
+                name="message"
+                rows="4"
+                placeholder="Quiero más información sobre disponibilidad y financiamiento."
+              ></textarea>
+
+              <button type="submit" class="form-submit">Enviar solicitud</button
+              >
+            </form>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const initVehicleGallery = () => {
+    const galleryRoot = document.querySelector("[data-gallery-slider]");
+
+    if (!(galleryRoot instanceof HTMLElement)) return;
+    if (galleryRoot.dataset.sliderReady === "true") return;
+
+    galleryRoot.dataset.sliderReady = "true";
+
+    const mainImage = galleryRoot.querySelector(".gallery-main-image");
+    const mainFrame = galleryRoot.querySelector(".gallery-main-frame");
+    const expandButton = galleryRoot.querySelector(".gallery-expand");
+    const prevButton = galleryRoot.querySelector(".gallery-nav-prev");
+    const nextButton = galleryRoot.querySelector(".gallery-nav-next");
+    const lightbox = galleryRoot.querySelector("[data-gallery-lightbox]");
+    const lightboxImage = galleryRoot.querySelector(".lightbox-image");
+    const lightboxClose = galleryRoot.querySelector(".lightbox-close");
+    const lightboxPrev = galleryRoot.querySelector(".lightbox-nav-prev");
+    const lightboxNext = galleryRoot.querySelector(".lightbox-nav-next");
+    const thumbnails = Array.from(
+      galleryRoot.querySelectorAll(".thumbnail-button"),
+    );
+
+    if (!(mainImage instanceof HTMLImageElement) || thumbnails.length === 0) {
+      return;
+    }
+
+    let currentIndex = 0;
+    let previousFocus: HTMLElement | null = null;
+    const IMAGE_FADE_MS = 260;
+    const LIGHTBOX_FADE_MS = 240;
+    let lightboxCloseTimer = 0;
+    const imageFadeTokens = new WeakMap<HTMLImageElement, number>();
+
+    const setBodyScrollLock = (isLocked: boolean) => {
+      document.body.style.overflow = isLocked ? "hidden" : "";
+    };
+
+    const fadeSwapImage = (
+      imageElement: HTMLImageElement | Element | null,
+      src: string,
+      alt: string,
+      isInstant = false,
+    ) => {
+      if (!(imageElement instanceof HTMLImageElement)) return;
+
+      const setImage = () => {
+        imageElement.src = src;
+        imageElement.alt = alt;
+      };
+
+      if (isInstant) {
+        imageElement.classList.remove("is-fading");
+        setImage();
+        return;
+      }
+
+      const nextToken = (imageFadeTokens.get(imageElement) ?? 0) + 1;
+      imageFadeTokens.set(imageElement, nextToken);
+
+      imageElement.classList.add("is-fading");
+
+      window.setTimeout(() => {
+        const activeToken = imageFadeTokens.get(imageElement);
+        if (activeToken !== nextToken) return;
+        setImage();
+        imageElement.classList.remove("is-fading");
+      }, IMAGE_FADE_MS / 2);
+    };
+
+    const openLightbox = () => {
+      if (!(lightbox instanceof HTMLElement)) return;
+      if (lightboxCloseTimer) {
+        window.clearTimeout(lightboxCloseTimer);
+        lightboxCloseTimer = 0;
+      }
+
+      previousFocus =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+
+      fadeSwapImage(lightboxImage, mainImage.src, mainImage.alt, true);
+      lightbox.removeAttribute("hidden");
+      setBodyScrollLock(true);
+
+      requestAnimationFrame(() => {
+        lightbox.classList.add("is-open");
+        lightbox.focus();
+      });
+    };
+
+    const closeLightbox = () => {
+      if (!(lightbox instanceof HTMLElement)) return;
+
+      lightbox.classList.remove("is-open");
+
+      if (lightboxCloseTimer) {
+        window.clearTimeout(lightboxCloseTimer);
+      }
+
+      lightboxCloseTimer = window.setTimeout(() => {
+        lightbox.setAttribute("hidden", "");
+        setBodyScrollLock(false);
+        if (previousFocus instanceof HTMLElement) {
+          previousFocus.focus();
+        }
+      }, LIGHTBOX_FADE_MS);
+    };
+
+    const goPrev = () => {
+      currentIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+      applyImageState();
+    };
+
+    const goNext = () => {
+      currentIndex = (currentIndex + 1) % thumbnails.length;
+      applyImageState();
+    };
+
+    const applyImageState = (isInstant = false) => {
+      const currentThumb = thumbnails[currentIndex];
+
+      if (!(currentThumb instanceof HTMLButtonElement)) return;
+
+      const imageSrc = currentThumb.getAttribute("data-image-src");
+      const imageAlt = currentThumb.getAttribute("data-image-alt");
+
+      if (!imageSrc || !imageAlt) return;
+
+      fadeSwapImage(mainImage, imageSrc, imageAlt, isInstant);
+      fadeSwapImage(lightboxImage, imageSrc, imageAlt, isInstant);
+
+      thumbnails.forEach((thumb, index) => {
+        if (!(thumb instanceof HTMLButtonElement)) return;
+        const isActive = index === currentIndex;
+        thumb.setAttribute("aria-selected", String(isActive));
+        thumb.classList.toggle("is-active", isActive);
+      });
+
+      currentThumb.scrollIntoView({
+        behavior: isInstant ? "auto" : "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    };
+
+    thumbnails.forEach((thumb, index) => {
+      if (!(thumb instanceof HTMLButtonElement)) return;
+      thumb.addEventListener("click", () => {
+        currentIndex = index;
+        applyImageState();
+      });
+    });
+
+    if (prevButton instanceof HTMLButtonElement) {
+      prevButton.addEventListener("click", goPrev);
+    }
+
+    if (nextButton instanceof HTMLButtonElement) {
+      nextButton.addEventListener("click", goNext);
+    }
+
+    if (expandButton instanceof HTMLButtonElement) {
+      expandButton.addEventListener("click", openLightbox);
+    }
+
+    if (mainImage instanceof HTMLImageElement) {
+      mainImage.addEventListener("click", openLightbox);
+    }
+
+    if (lightboxClose instanceof HTMLButtonElement) {
+      lightboxClose.addEventListener("click", closeLightbox);
+    }
+
+    if (lightboxPrev instanceof HTMLButtonElement) {
+      lightboxPrev.addEventListener("click", goPrev);
+    }
+
+    if (lightboxNext instanceof HTMLButtonElement) {
+      lightboxNext.addEventListener("click", goNext);
+    }
+
+    if (lightbox instanceof HTMLElement) {
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      lightbox.addEventListener("keydown", (event) => {
+        if (lightbox.hasAttribute("hidden")) return;
+
+        if (event.key === "Escape") {
+          event.preventDefault();
+          closeLightbox();
+        }
+
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          goPrev();
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          goNext();
+        }
+      });
+    }
+
+    if (mainFrame instanceof HTMLElement) {
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      mainFrame.addEventListener(
+        "touchstart",
+        (event) => {
+          const touch = event.changedTouches[0];
+          if (!touch) return;
+          touchStartX = touch.clientX;
+          touchStartY = touch.clientY;
+        },
+        { passive: true },
+      );
+
+      mainFrame.addEventListener(
+        "touchend",
+        (event) => {
+          const touch = event.changedTouches[0];
+          if (!touch) return;
+
+          const deltaX = touch.clientX - touchStartX;
+          const deltaY = touch.clientY - touchStartY;
+          const absX = Math.abs(deltaX);
+          const absY = Math.abs(deltaY);
+
+          const SWIPE_THRESHOLD = 45;
+          const HORIZONTAL_RATIO = 1.2;
+
+          const isHorizontalSwipe =
+            absX > SWIPE_THRESHOLD && absX > absY * HORIZONTAL_RATIO;
+
+          if (!isHorizontalSwipe) return;
+
+          if (deltaX < 0) {
+            goNext();
+          } else {
+            goPrev();
+          }
+        },
+        { passive: true },
+      );
+    }
+
+    applyImageState(true);
+  };
+
+  document.addEventListener("astro:page-load", initVehicleGallery);
+  initVehicleGallery();
+</script>
+
+<style>
+  .vehicle-page {
+    padding: var(--space-10) 0;
+  }
+
+  .vehicle-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .breadcrumbs {
+    overflow-x: auto;
+  }
+
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    white-space: nowrap;
+  }
+
+  .breadcrumb-item:not(:last-child)::after {
+    content: "/";
+    margin-left: var(--space-2);
+    color: rgba(34, 31, 34, 0.45);
+  }
+
+  .breadcrumb-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--color-primary);
+  }
+
+  .breadcrumb-item[aria-current="page"] {
+    color: rgba(230, 13, 46, 0.62);
+    font-weight: 500;
+    cursor: default;
+    user-select: none;
+  }
+
+  .vehicle-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 56rem;
+  }
+
+  .vehicle-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.1;
+  }
+
+  .vehicle-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
+    font-weight: 300;
+  }
+
+  .vehicle-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .vehicle-gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .gallery-slider {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(34, 31, 34, 0.08);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .gallery-main-frame {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.03);
+    touch-action: pan-y;
+  }
+
+  .gallery-expand {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: rgba(34, 31, 34, 0.65);
+    color: var(--color-text-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  .gallery-main-image {
+    width: 100%;
+    height: clamp(20rem, 40vw, 30rem);
+    object-fit: cover;
+    display: block;
+    background-color: rgba(34, 31, 34, 0.08);
+    background-image: linear-gradient(
+      120deg,
+      rgba(34, 31, 34, 0.08) 0%,
+      rgba(34, 31, 34, 0.14) 50%,
+      rgba(34, 31, 34, 0.08) 100%
+    );
+    cursor: zoom-in;
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 0.26s ease,
+      transform 0.26s ease;
+  }
+
+  .gallery-main-image.is-fading,
+  .lightbox-image.is-fading {
+    opacity: 0.14;
+    transform: scale(0.992);
+  }
+
+  .gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(34, 31, 34, 0.65);
+    color: var(--color-text-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  .gallery-nav-prev {
+    left: var(--space-3);
+  }
+
+  .gallery-nav-next {
+    right: var(--space-3);
+  }
+
+  .gallery-thumbnails {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - (var(--space-3) * 3)) / 4);
+    gap: var(--space-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding-bottom: var(--space-1);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(34, 31, 34, 0.3) transparent;
+  }
+
+  .gallery-thumbnails::-webkit-scrollbar {
+    height: 0.4rem;
+  }
+
+  .gallery-thumbnails::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .gallery-thumbnails::-webkit-scrollbar-thumb {
+    background: rgba(34, 31, 34, 0.3);
+    border-radius: 999px;
+  }
+
+  .thumbnail-button {
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    padding: 0;
+    background-color: rgba(34, 31, 34, 0.08);
+    background-image: linear-gradient(
+      120deg,
+      rgba(34, 31, 34, 0.08) 0%,
+      rgba(34, 31, 34, 0.14) 50%,
+      rgba(34, 31, 34, 0.08) 100%
+    );
+    cursor: pointer;
+    opacity: 0.75;
+    scroll-snap-align: start;
+    transition:
+      opacity 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .thumbnail-button.is-active,
+  .thumbnail-button:hover {
+    opacity: 1;
+    border-color: var(--color-primary);
+  }
+
+  .thumbnail-image {
+    width: 100%;
+    height: 5.5rem;
+    object-fit: cover;
+    display: block;
+    background-color: rgba(34, 31, 34, 0.08);
+  }
+
+  .gallery-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 8, 9, 0.82);
+    display: grid;
+    place-items: center;
+    padding: var(--space-5);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.24s ease;
+  }
+
+  .gallery-lightbox[hidden] {
+    display: none;
+  }
+
+  .gallery-lightbox.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lightbox-content {
+    position: relative;
+    width: min(100%, 72rem);
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--space-4);
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.985);
+    transition:
+      opacity 0.26s ease,
+      transform 0.26s ease;
+  }
+
+  .gallery-lightbox.is-open .lightbox-content {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .lightbox-image {
+    width: 100%;
+    max-height: min(82vh, 48rem);
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 0.26s ease,
+      transform 0.26s ease;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: calc(var(--space-4) * -1);
+    right: 0;
+    z-index: 3;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--color-text-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  .lightbox-nav {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--color-text-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+  }
+
+  .gallery-expand,
+  .gallery-nav,
+  .lightbox-close,
+  .lightbox-nav {
+    transition: background-color 0.2s ease;
+  }
+
+  .gallery-expand:hover,
+  .gallery-nav:hover,
+  .lightbox-close:hover,
+  .lightbox-nav:hover {
+    background: rgba(34, 31, 34, 0.82);
+  }
+
+  .vehicle-description-block {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(34, 31, 34, 0.08);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .vehicle-description {
+    color: var(--color-text-secondary);
+    font-weight: 300;
+  }
+
+  .vehicle-side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-6));
+  }
+
+  .price-card,
+  .specs-card,
+  .form-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(34, 31, 34, 0.08);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .price-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .price-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .price-label {
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .price-value {
+    font-size: 1.375rem;
+    color: var(--color-primary);
+  }
+
+  .vehicle-location {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+  }
+
+  .whatsapp-contact {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-6);
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: var(--color-text-white);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    box-shadow: 0 10px 24px rgba(230, 13, 46, 0.3);
+  }
+
+  .whatsapp-contact:hover {
+    color: var(--color-text-white) !important;
+    filter: brightness(1.05);
+  }
+
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3) var(--space-4);
+    margin: 0;
+  }
+
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .spec-label {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+  }
+
+  .specs-card .section-title {
+    color: var(--color-text-primary);
+  }
+
+  .spec-value {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .vehicle-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.875rem;
+    font: inherit;
+    color: var(--color-text-primary);
+    background: var(--color-bg-light);
+    outline: none;
+  }
+
+  .form-input:focus-visible,
+  .form-textarea:focus-visible,
+  .thumbnail-button:focus-visible,
+  .gallery-expand:focus-visible,
+  .gallery-nav:focus-visible,
+  .lightbox-close:focus-visible,
+  .lightbox-nav:focus-visible,
+  .form-submit:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
+  }
+
+  .form-submit {
+    margin-top: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: 1px solid rgba(230, 13, 46, 0.25);
+    border-radius: 999px;
+    padding: var(--space-3) 1.75rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .form-submit:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    box-shadow: var(--shadow-button);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+    color: var(--color-text-white);
+  }
+
+  .form-submit::after {
+    content: "→";
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  .form-submit:hover::after {
+    transform: translateX(4px);
+  }
+
+  .form-submit:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  @media (max-width: 1100px) {
+    .vehicle-main {
+      grid-template-columns: 1fr;
+    }
+
+    .vehicle-side-panel {
+      position: static;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .vehicle-page {
+      padding: var(--space-9) 0;
+    }
+
+    .gallery-slider {
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .vehicle-description-block,
+    .price-card,
+    .specs-card,
+    .form-card {
+      padding: var(--space-5);
+    }
+
+    .gallery-thumbnails {
+      grid-auto-columns: calc((100% - var(--space-3)) / 2);
+    }
+
+    .gallery-expand {
+      top: var(--space-2);
+      right: var(--space-2);
+    }
+
+    .lightbox-content {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+
+    .lightbox-nav-prev {
+      left: var(--space-2);
+    }
+
+    .lightbox-nav-next {
+      right: var(--space-2);
+    }
+
+    .price-row,
+    .specs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

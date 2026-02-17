@@ -65,14 +65,14 @@ const models = [
     <div class="container models-layout">
       <aside class="models-filters" aria-label="Filtros de búsqueda">
         <div class="filters-header">
-          <h2 class="filters-title">Filtrar modelos</h2>
-          <button type="button" class="filters-clear button-reset"
+          <h2 class="filters-title page-title">Filtrar modelos</h2>
+          <button type="button" class="filters-clear button-reset page-actions"
             >Limpiar</button
           >
         </div>
         <form class="filters-form">
-          <label class="filters-label">
-            Marca
+          <label class="filters-label"
+            ><span class="page-fade-in-up">Marca</span>
             <select name="brand" class="filters-select">
               <option value="">Todas</option>
               <option value="toyota">Toyota</option>
@@ -81,8 +81,8 @@ const models = [
               <option value="kia">Kia</option>
             </select>
           </label>
-          <label class="filters-label">
-            Año
+          <label class="filters-label"
+            ><span class="page-fade-in-up">Año</span>
             <select name="year" class="filters-select">
               <option value="">Todos</option>
               <option value="2024">2024</option>
@@ -91,8 +91,8 @@ const models = [
               <option value="2021">2021</option>
             </select>
           </label>
-          <label class="filters-label">
-            Tipo de vehículo
+          <label class="filters-label"
+            ><span class="page-fade-in-up">Tipo de vehículo</span>
             <select name="type" class="filters-select">
               <option value="">Todos</option>
               <option value="sedan">Sedán</option>
@@ -101,7 +101,7 @@ const models = [
             </select>
           </label>
           <label class="filters-label price-filter">
-            <span>Rango de precio</span>
+            <span class="page-fade-in-up">Rango de precio</span>
             <div class="price-range">
               <div
                 class="range-value"
@@ -133,9 +133,11 @@ const models = [
       <div class="models-content">
         <div class="models-header">
           <div>
-            <p class="eyebrow">Inventario destacado</p>
-            <h2 id="models-title" class="models-title">Modelos disponibles</h2>
-            <p class="models-description">
+            <p class="eyebrow page-title">Inventario destacado</p>
+            <h2 id="models-title" class="models-title page-title">
+              Modelos disponibles
+            </h2>
+            <p class="models-description page-description">
               Explora las unidades listas para entrega inmediata con garantía
               certificada.
             </p>
@@ -305,7 +307,7 @@ const models = [
 
 <style>
   .models-section {
-    padding: var(--space-10) 0;
+    padding: var(--space-6) 0 var(--space-10) 0;
     scroll-margin-top: calc(var(--header-height) + 24px);
   }
 

@@ -81,10 +81,12 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
       </nav>
 
       <header class="vehicle-header" aria-labelledby="vehicle-title">
-        <h1 id="vehicle-title" class="vehicle-title">
+        <h1 id="vehicle-title" class="vehicle-title page-fade-in-up">
           {vehicle.name}
         </h1>
-        <p class="vehicle-subtitle">{vehicle.shortDescription}</p>
+        <p class="vehicle-subtitle page-fade-in-up">
+          {vehicle.shortDescription}
+        </p>
       </header>
 
       <div class="vehicle-main">
@@ -158,7 +160,6 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
               role="dialog"
               aria-modal="true"
               aria-label="Galería ampliada del vehículo"
-              tabindex="-1"
               hidden
             >
               <div class="lightbox-content">
@@ -195,8 +196,10 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
           </div>
 
           <div class="vehicle-description-block">
-            <h2 class="section-title">Descripción</h2>
-            <p class="vehicle-description">{vehicle.description}</p>
+            <h2 class="section-title page-fade-in-up">Descripción</h2>
+            <p class="vehicle-description page-fade-in-up">
+              {vehicle.description}
+            </p>
           </div>
         </section>
 
@@ -205,20 +208,24 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
           aria-label="Información principal del vehículo"
         >
           <section class="price-card">
-            <h2 class="section-title">Precio y kilometraje</h2>
+            <h2 class="section-title page-fade-in-up">Precio y kilometraje</h2>
             <div class="price-row">
               <div class="price-item">
-                <span class="price-label">Precio</span>
-                <strong class="price-value">
+                <span class="price-label page-fade-in-up">Precio</span>
+                <strong class="price-value page-fade-in-up">
                   {vehicle.price}
                 </strong>
               </div>
               <div class="price-item">
-                <span class="price-label">Kilometraje</span>
-                <strong class="price-value">{vehicle.kilometers}</strong>
+                <span class="price-label page-fade-in-up">Kilometraje</span>
+                <strong class="price-value page-fade-in-up"
+                  >{vehicle.kilometers}</strong
+                >
               </div>
             </div>
-            <p class="vehicle-location">Ubicación: {vehicle.location}</p>
+            <p class="vehicle-location page-fade-in-up">
+              Ubicación: {vehicle.location}
+            </p>
             <a
               href={whatsappLink}
               class="whatsapp-contact"
@@ -230,13 +237,15 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
           </section>
 
           <section class="specs-card" aria-labelledby="specs-title">
-            <h2 id="specs-title" class="section-title">Ficha técnica</h2>
+            <h2 id="specs-title" class="section-title page-fade-in-up">
+              Ficha técnica
+            </h2>
             <dl class="specs-grid">
               {
                 vehicle.specs.map(([label, value]) => (
                   <div class="spec-item">
-                    <dt class="spec-label">{label}</dt>
-                    <dd class="spec-value">{value}</dd>
+                    <dt class="spec-label page-fade-in-up">{label}</dt>
+                    <dd class="spec-value page-fade-in-up">{value}</dd>
                   </div>
                 ))
               }
@@ -244,45 +253,56 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
           </section>
 
           <section class="form-card" aria-labelledby="form-title">
-            <h2 id="form-title" class="section-title">Solicitar información</h2>
+            <h2 id="form-title" class="section-title page-fade-in-up">
+              Solicitar información
+            </h2>
             <form class="vehicle-form" action="/thank-you" method="get">
-              <label class="form-label" for="name">Nombre completo</label>
+              <label class="form-label page-fade-in-up" for="name"
+                >Nombre completo</label
+              >
               <input
-                class="form-input"
+                class="form-input page-fade-in-up"
                 id="name"
                 name="name"
                 type="text"
                 required
               />
 
-              <label class="form-label" for="email">Correo electrónico</label>
+              <label class="form-label page-fade-in-up" for="email"
+                >Correo electrónico</label
+              >
               <input
-                class="form-input"
+                class="form-input page-fade-in-up"
                 id="email"
                 name="email"
                 type="email"
                 required
               />
 
-              <label class="form-label" for="phone">Teléfono</label>
+              <label class="form-label page-fade-in-up" for="phone"
+                >Teléfono</label
+              >
               <input
-                class="form-input"
+                class="form-input page-fade-in-up"
                 id="phone"
                 name="phone"
                 type="tel"
                 required
               />
 
-              <label class="form-label" for="message">Mensaje</label>
+              <label class="form-label page-fade-in-up" for="message"
+                >Mensaje</label
+              >
               <textarea
-                class="form-textarea"
+                class="form-textarea page-fade-in-up"
                 id="message"
                 name="message"
                 rows="4"
                 placeholder="Quiero más información sobre disponibilidad y financiamiento."
               ></textarea>
 
-              <button type="submit" class="form-submit">ENVIAR SOLICITUD</button
+              <button type="submit" class="form-submit page-fade-in-up"
+                >ENVIAR SOLICITUD</button
               >
             </form>
           </section>
@@ -290,6 +310,21 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    // Forzar scroll al top tras navegación interna, después de animaciones/render
+    function forceScrollTop() {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
+    if (performance && performance.getEntriesByType) {
+      const navEntries = performance.getEntriesByType("navigation");
+      const isReload = navEntries.length && navEntries[0].type === "reload";
+      if (!isReload) {
+        setTimeout(forceScrollTop, 400);
+        window.addEventListener("load", forceScrollTop);
+      }
+    }
+  </script>
 </Layout>
 
 <script>

@@ -225,7 +225,7 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
               target="_blank"
               rel="noopener noreferrer"
             >
-              Contactar por WhatsApp
+              CONTACTAR POR WHATSAPP
             </a>
           </section>
 
@@ -245,13 +245,22 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
 
           <section class="form-card" aria-labelledby="form-title">
             <h2 id="form-title" class="section-title">Solicitar información</h2>
-            <form class="vehicle-form">
+            <form class="vehicle-form" action="/thank-you" method="get">
               <label class="form-label" for="name">Nombre completo</label>
               <input
                 class="form-input"
                 id="name"
                 name="name"
                 type="text"
+                required
+              />
+
+              <label class="form-label" for="email">Correo electrónico</label>
+              <input
+                class="form-input"
+                id="email"
+                name="email"
+                type="email"
                 required
               />
 
@@ -273,7 +282,7 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
                 placeholder="Quiero más información sobre disponibilidad y financiamiento."
               ></textarea>
 
-              <button type="submit" class="form-submit">Enviar solicitud</button
+              <button type="submit" class="form-submit">ENVIAR SOLICITUD</button
               >
             </form>
           </section>
@@ -941,21 +950,30 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
   }
 
   .whatsapp-contact {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-3) var(--space-6);
-    border-radius: 999px;
-    background: var(--color-primary);
+    display: inline-block;
+    padding: var(--space-4) var(--space-8);
+    background-color: var(--color-primary);
     color: var(--color-text-white);
     font-family: var(--font-heading);
-    font-size: 0.95rem;
-    box-shadow: 0 10px 24px rgba(230, 13, 46, 0.3);
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-button);
+    outline: none;
+    text-align: center;
+  }
+
+  .whatsapp-contact:focus-visible {
+    outline: 3px solid var(--color-primary-light);
+    outline-offset: 2px;
   }
 
   .whatsapp-contact:hover {
+    filter: brightness(1.1);
+    box-shadow: var(--shadow-button-hover);
+    transform: translateY(-2px);
     color: var(--color-text-white) !important;
-    filter: brightness(1.05);
   }
 
   .specs-grid {
@@ -1026,44 +1044,27 @@ const whatsappLink = `https://wa.me/1234567890?text=${whatsappMessage}`;
 
   .form-submit {
     margin-top: var(--space-2);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    border: 1px solid rgba(230, 13, 46, 0.25);
-    border-radius: 999px;
-    padding: var(--space-3) 1.75rem;
-    background: rgba(255, 255, 255, 0.95);
+    display: inline-block;
+    padding: var(--space-4) var(--space-8);
+    background-color: transparent;
     color: var(--color-primary);
     font-family: var(--font-heading);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 500;
-    cursor: pointer;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 31, 34, 0.08);
     transition: all 0.3s ease;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
   }
 
   .form-submit:hover {
-    border-color: var(--color-primary);
-    background: var(--color-primary);
-    box-shadow: var(--shadow-button);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-    transform: translateY(-2px);
+    background-color: var(--color-primary);
     color: var(--color-text-white);
-  }
-
-  .form-submit::after {
-    content: "→";
-    font-size: 1rem;
-    transition: transform 0.3s ease;
-  }
-
-  .form-submit:hover::after {
-    transform: translateX(4px);
-  }
-
-  .form-submit:active {
-    transform: translateY(0);
-    box-shadow: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-button);
+    transform: translateY(-2px);
   }
 
   @media (max-width: 1100px) {

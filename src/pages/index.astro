@@ -4,38 +4,52 @@ import Hero from "../components/Hero.astro";
 
 const models = [
   {
-    name: "Toyota Corolla 2021",
+    name: "Toyota Corolla 2024",
     description:
       "Sedán confiable con mantenimiento al día y sistema híbrido eficiente.",
-    price: "$18,900",
-    kilometers: "48,500 km",
+    price: "Q224,000",
+    priceValue: 224000,
+    brand: "toyota",
+    year: 2024,
+    type: "sedan",
+    kilometers: "5,200 km",
     image:
       "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
   },
   {
-    name: "Honda Civic Touring 2020",
-    description:
-      "Deportivo y cómodo, con asistencias de manejo y techo panorámico.",
-    price: "$20,500",
-    kilometers: "36,200 km",
+    name: "Honda CR-V 2023",
+    description: "SUV espaciosa con asistencias de manejo y techo panorámico.",
+    price: "Q253,000",
+    priceValue: 253000,
+    brand: "honda",
+    year: 2023,
+    type: "suv",
+    kilometers: "12,800 km",
     image:
       "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
   },
   {
-    name: "Mazda CX-5 2019",
+    name: "Mazda BT-50 2022",
     description:
-      "SUV premium con interior en cuero, ideal para familias y viajes largos.",
-    price: "$23,400",
-    kilometers: "52,800 km",
+      "Pickup robusta con tracción 4x4, ideal para trabajo y aventura.",
+    price: "Q209,000",
+    priceValue: 209000,
+    brand: "mazda",
+    year: 2022,
+    type: "pickup",
+    kilometers: "28,400 km",
     image:
       "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80",
   },
   {
-    name: "Kia Sportage 2022",
-    description:
-      "Tecnología avanzada, cámara 360° y garantía vigente de fábrica.",
-    price: "$25,100",
-    kilometers: "18,900 km",
+    name: "Kia Forte GT 2021",
+    description: "Sedán deportivo con tecnología avanzada y garantía vigente.",
+    price: "Q155,000",
+    priceValue: 155000,
+    brand: "kia",
+    year: 2021,
+    type: "sedan",
+    kilometers: "35,600 km",
     image:
       "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
   },
@@ -59,7 +73,7 @@ const models = [
         <form class="filters-form">
           <label class="filters-label">
             Marca
-            <select class="filters-select">
+            <select name="brand" class="filters-select">
               <option value="">Todas</option>
               <option value="toyota">Toyota</option>
               <option value="honda">Honda</option>
@@ -69,7 +83,7 @@ const models = [
           </label>
           <label class="filters-label">
             Año
-            <select class="filters-select">
+            <select name="year" class="filters-select">
               <option value="">Todos</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
@@ -79,7 +93,7 @@ const models = [
           </label>
           <label class="filters-label">
             Tipo de vehículo
-            <select class="filters-select">
+            <select name="type" class="filters-select">
               <option value="">Todos</option>
               <option value="sedan">Sedán</option>
               <option value="suv">SUV</option>
@@ -95,25 +109,24 @@ const models = [
                 role="status"
                 aria-live="polite"
               >
-                $25,000
+                Q200,000
               </div>
               <input
                 type="range"
                 class="price-range-input"
                 id="price-range"
                 name="price"
-                min="10000"
-                max="40000"
+                min="100000"
+                max="300000"
                 step="1000"
-                value="25000"
+                value="200000"
               />
               <div class="range-scale">
-                <span>$10k</span>
-                <span>$40k</span>
+                <span>Q100k</span>
+                <span>Q300k</span>
               </div>
             </div>
           </label>
-          <button type="submit" class="filters-submit">APLICAR FILTROS</button>
         </form>
       </aside>
 
@@ -132,7 +145,13 @@ const models = [
         <ul class="models-grid" role="list" aria-label="Lista de modelos">
           {
             models.map((model) => (
-              <li class="models-grid-item">
+              <li
+                class="models-grid-item"
+                data-brand={model.brand}
+                data-year={model.year}
+                data-type={model.type}
+                data-price={model.priceValue}
+              >
                 <a href="/internal-models-section" class="model-card">
                   <div class="model-image">
                     <img
@@ -166,6 +185,15 @@ const models = [
             ))
           }
         </ul>
+        <div class="models-no-results" style="display: none;">
+          <p class="models-no-results-text">
+            No se encontraron modelos que coincidan con los filtros
+            seleccionados.
+          </p>
+          <button type="button" class="filters-clear-all models-no-results-btn">
+            LIMPIAR FILTROS
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -174,12 +202,81 @@ const models = [
 <script>
   const priceRange = document.querySelector("#price-range");
   const priceValue = document.querySelector("[data-price-value]");
+  const brandFilter = document.querySelector(
+    'select[name="brand"]',
+  ) as HTMLSelectElement;
+  const yearFilter = document.querySelector(
+    'select[name="year"]',
+  ) as HTMLSelectElement;
+  const typeFilter = document.querySelector(
+    'select[name="type"]',
+  ) as HTMLSelectElement;
+  const clearButton = document.querySelector(
+    ".filters-clear",
+  ) as HTMLButtonElement;
+  const clearAllButton = document.querySelector(
+    ".filters-clear-all",
+  ) as HTMLButtonElement;
+  const modelsGrid = document.querySelector(".models-grid");
+  const noResultsMessage = document.querySelector(
+    ".models-no-results",
+  ) as HTMLElement;
 
-  const priceFormatter = new Intl.NumberFormat("es-MX", {
+  const priceFormatter = new Intl.NumberFormat("es-GT", {
     style: "currency",
-    currency: "USD",
+    currency: "GTQ",
     maximumFractionDigits: 0,
   });
+
+  const filterModels = () => {
+    if (!modelsGrid) return;
+
+    const selectedBrand = brandFilter?.value || "";
+    const selectedYear = yearFilter?.value || "";
+    const selectedType = typeFilter?.value || "";
+    const maxPrice =
+      priceRange instanceof HTMLInputElement ? Number(priceRange.value) : 40000;
+
+    const modelItems = Array.from(
+      modelsGrid.querySelectorAll(".models-grid-item"),
+    );
+    let visibleCount = 0;
+
+    modelItems.forEach((item) => {
+      if (!(item instanceof HTMLElement)) return;
+
+      const brand = item.dataset.brand || "";
+      const year = item.dataset.year || "";
+      const type = item.dataset.type || "";
+      const price = Number(item.dataset.price) || 0;
+
+      const matchesBrand = !selectedBrand || brand === selectedBrand;
+      const matchesYear = !selectedYear || year === selectedYear;
+      const matchesType = !selectedType || type === selectedType;
+      const matchesPrice = price <= maxPrice;
+
+      const isVisible =
+        matchesBrand && matchesYear && matchesType && matchesPrice;
+
+      item.style.display = isVisible ? "" : "none";
+      if (isVisible) visibleCount++;
+    });
+
+    if (noResultsMessage) {
+      noResultsMessage.style.display = visibleCount === 0 ? "block" : "none";
+    }
+  };
+
+  const clearFilters = () => {
+    if (brandFilter) brandFilter.value = "";
+    if (yearFilter) yearFilter.value = "";
+    if (typeFilter) typeFilter.value = "";
+    if (priceRange instanceof HTMLInputElement) {
+      priceRange.value = priceRange.max;
+      updateRangeFill();
+    }
+    filterModels();
+  };
 
   const updateRangeFill = () => {
     if (!(priceRange instanceof HTMLInputElement)) return;
@@ -194,7 +291,16 @@ const models = [
   };
 
   updateRangeFill();
-  priceRange?.addEventListener("input", updateRangeFill);
+  priceRange?.addEventListener("input", () => {
+    updateRangeFill();
+    filterModels();
+  });
+
+  brandFilter?.addEventListener("change", filterModels);
+  yearFilter?.addEventListener("change", filterModels);
+  typeFilter?.addEventListener("change", filterModels);
+  clearButton?.addEventListener("click", clearFilters);
+  clearAllButton?.addEventListener("click", clearFilters);
 </script>
 
 <style>
@@ -346,9 +452,9 @@ const models = [
   }
 
   .filters-select:focus-visible {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(230, 13, 46, 0.15);
-    outline: 3px solid var(--color-primary-light);
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 2px rgba(230, 13, 46, 0.1);
+    outline: 2px solid rgba(230, 13, 46, 0.18);
     outline-offset: 2px;
   }
 
@@ -375,6 +481,50 @@ const models = [
   }
 
   .filters-submit:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-button);
+    transform: translateY(-2px);
+  }
+
+  .models-no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    padding: var(--space-10) var(--space-6);
+    text-align: center;
+  }
+
+  .models-no-results-text {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    font-weight: 300;
+  }
+
+  .models-no-results-btn {
+    margin-top: var(--space-2);
+    display: inline-block;
+    padding: var(--space-4) var(--space-8);
+    background-color: transparent;
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 31, 34, 0.08);
+    transition: all 0.3s ease;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .models-no-results-btn:focus-visible {
+    outline: 2px solid rgba(230, 13, 46, 0.18);
+    outline-offset: 2px;
+  }
+  .models-no-results-btn:hover {
     background-color: var(--color-primary);
     color: var(--color-text-white);
     border-color: var(--color-primary);
@@ -418,12 +568,22 @@ const models = [
 
   .models-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-6);
     align-items: stretch;
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+  @media (max-width: 900px) {
+    .models-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .models-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .models-grid-item {

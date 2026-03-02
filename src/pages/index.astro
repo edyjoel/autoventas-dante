@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
+import { getModels } from "../lib/supabase/models";
+import type { Model } from "../lib/supabase/types";
 
 const models = [
   {
@@ -54,6 +56,16 @@ const models = [
       "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80",
   },
 ];
+
+let dbModels: Model[] | null = null;
+let dbModelsError: string | null = null;
+
+try {
+  dbModels = await getModels();
+} catch (error) {
+  dbModelsError =
+    error instanceof Error ? error.message : "Error al cargar modelos desde Supabase.";
+}
 ---
 
 <Layout
@@ -199,6 +211,28 @@ const models = [
       </div>
     </div>
   </section>
+
+  {dbModels && (
+    <section class="supabase-demo-section">
+      <div class="container">
+        <h2 class="supabase-demo-title">Modelos desde Supabase (ejemplo sencillo)</h2>
+        <p class="supabase-demo-description">
+          Esta lista se carga directamente desde la tabla <code>models</code> en Supabase,
+          usando el cliente configurado en <code>src/lib/supabase/client.ts</code>.
+        </p>
+        <ul class="supabase-demo-list" aria-label="Modelos cargados desde Supabase">
+          {dbModels.map((model) => (
+            <li class="supabase-demo-item">
+              <strong>{model.brand} {model.model}</strong>
+              <span>
+                Año {model.year} · {model.type} · Q{model.price}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 </Layout>
 
 <script>

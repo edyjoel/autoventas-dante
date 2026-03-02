@@ -247,3 +247,282 @@
 > - Los campos opcionales permiten NULL.
 > - Los campos text con longitud son sugerencias para validación y performance.
 > - Listo para copiar y crear tablas en Supabase.
+
+## SQL para crear el esquema en Supabase
+
+```sql
+-- Opcional: asegurarse de tener gen_random_uuid()
+create extension if not exists "pgcrypto";
+
+-- =========================================
+-- Tabla: users (administración interna)
+-- =========================================
+create table if not exists public.users (
+  id            uuid primary key default gen_random_uuid(),
+  email         text not null unique,
+  password_hash text not null,
+  role          text not null default 'admin',
+  created_at    timestamptz not null default now(),
+  last_login_at timestamptz,
+  is_active     boolean not null default true
+);
+
+create index if not exists idx_users_email on public.users(email);
+create index if not exists idx_users_role on public.users(role);
+
+-- =========================================
+-- Tabla: brands
+-- =========================================
+create table if not exists public.brands (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  logo_url   text,
+  created_at timestamptz not null default now()
+);
+
+create unique index if not exists uq_brands_name on public.brands(name);
+
+-- =========================================
+-- Tabla: models (vehículos)
+-- =========================================
+create table if not exists public.models (
+  id          uuid primary key default gen_random_uuid(),
+  brand       text not null,
+  model       text not null,
+  year        integer not null,
+  type        text not null,
+  price       numeric(12,2) not null,
+  image_url   text,
+  description text,
+  status      text not null default 'enabled',
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now(),
+  created_by  uuid references public.users(id),
+  updated_by  uuid references public.users(id),
+  deleted_at  timestamptz
+);
+
+create index if not exists idx_models_brand      on public.models(brand);
+create index if not exists idx_models_model      on public.models(model);
+create index if not exists idx_models_year       on public.models(year);
+create index if not exists idx_models_type       on public.models(type);
+create index if not exists idx_models_status     on public.models(status);
+create index if not exists idx_models_created_at on public.models(created_at);
+
+-- =========================================
+-- Tabla: images (galería por modelo)
+-- =========================================
+create table if not exists public.images (
+  id         uuid primary key default gen_random_uuid(),
+  model_id   uuid not null references public.models(id) on delete cascade,
+  url        text not null,
+  alt        text,
+  "order"    integer not null default 0,
+  created_at timestamptz not null default now(),
+  created_by uuid references public.users(id)
+);
+
+create index if not exists idx_images_model_id on public.images(model_id);
+create index if not exists idx_images_order    on public.images("order");
+
+-- =========================================
+-- Tabla: model_inquiries (consultas por modelo)
+-- =========================================
+create table if not exists public.model_inquiries (
+  id         uuid primary key default gen_random_uuid(),
+  model_id   uuid not null references public.models(id) on delete cascade,
+  model_name text not null,
+  name       text not null,
+  email      text not null,
+  phone      text,
+  message    text,
+  created_at timestamptz not null default now(),
+  status     text not null default 'new',
+  ip_address text,
+  user_agent text
+);
+
+create index if not exists idx_inquiries_model_id   on public.model_inquiries(model_id);
+create index if not exists idx_inquiries_status     on public.model_inquiries(status);
+create index if not exists idx_inquiries_created_at on public.model_inquiries(created_at);
+
+-- =========================================
+-- (Opcional) RLS básica de solo lectura pública en models
+-- Ejecutar solo si quieres abrir lectura pública
+-- =========================================
+alter table public.models enable row level security;
+
+create policy "Public read enabled models"
+on public.models
+for select
+to anon, authenticated
+using (status = 'enabled' and deleted_at is null);
+```
+
+## SQL de datos de prueba (seed)
+
+Estos scripts insertan datos de ejemplo en las tablas `users`, `brands`, `models`, `images` y `model_inquiries` para que puedas probar rápidamente la integración desde Astro.
+
+```sql
+-- =========================================
+-- Datos de prueba para tabla: users
+-- =========================================
+insert into public.users (id, email, password_hash, role, is_active)
+values
+  ('11111111-1111-1111-1111-111111111111', 'admin@autoventasdante.com', 'hash-demo', 'admin', true),
+  ('22222222-2222-2222-2222-222222222222', 'ventas@autoventasdante.com', 'hash-demo', 'sales', true)
+on conflict (email) do nothing;
+
+-- =========================================
+-- Datos de prueba para tabla: brands
+-- =========================================
+insert into public.brands (id, name, logo_url)
+values
+  ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Toyota', 'https://via.placeholder.com/120x60?text=Toyota'),
+  ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Honda',  'https://via.placeholder.com/120x60?text=Honda'),
+  ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Mazda',  'https://via.placeholder.com/120x60?text=Mazda')
+on conflict (name) do nothing;
+
+-- =========================================
+-- Datos de prueba para tabla: models (vehículos)
+-- Nota: los IDs se reutilizan en images y model_inquiries
+-- =========================================
+insert into public.models (
+  id, brand, model, year, type, price,
+  image_url, description, status, created_by, updated_by
+)
+values
+  -- Toyota Corolla
+  ('10101010-1010-1010-1010-101010101010',
+   'Toyota', 'Corolla', 2021, 'Sedán', 24500.00,
+   'https://via.placeholder.com/800x450?text=Corolla+2021',
+   'Toyota Corolla 2021, excelente consumo y perfecto para ciudad.',
+   'enabled',
+   '11111111-1111-1111-1111-111111111111',
+   '11111111-1111-1111-1111-111111111111'
+  ),
+  -- Honda CR-V
+  ('20202020-2020-2020-2020-202020202020',
+   'Honda', 'CR-V', 2022, 'SUV', 36500.00,
+   'https://via.placeholder.com/800x450?text=CR-V+2022',
+   'Honda CR-V 2022, SUV familiar con amplio espacio y seguridad.',
+   'enabled',
+   '11111111-1111-1111-1111-111111111111',
+   '11111111-1111-1111-1111-111111111111'
+  ),
+  -- Mazda 3
+  ('30303030-3030-3030-3030-303030303030',
+   'Mazda', '3', 2020, 'Hatchback', 27500.00,
+   'https://via.placeholder.com/800x450?text=Mazda+3+2020',
+   'Mazda 3 2020, diseño deportivo y gran equipamiento.',
+   'enabled',
+   '22222222-2222-2222-2222-222222222222',
+   '22222222-2222-2222-2222-222222222222'
+  )
+on conflict (id) do nothing;
+
+-- =========================================
+-- Datos de prueba para tabla: images (galería)
+-- =========================================
+insert into public.images (
+  id, model_id, url, alt, "order", created_by
+)
+values
+  -- Imágenes Corolla
+  ('41111111-1111-1111-1111-111111111111',
+   '10101010-1010-1010-1010-101010101010',
+   'https://via.placeholder.com/800x450?text=Corolla+Frente',
+   'Toyota Corolla 2021 - Vista frontal',
+   0,
+   '11111111-1111-1111-1111-111111111111'
+  ),
+  ('41111111-1111-1111-1111-222222222222',
+   '10101010-1010-1010-1010-101010101010',
+   'https://via.placeholder.com/800x450?text=Corolla+Interior',
+   'Toyota Corolla 2021 - Interior',
+   1,
+   '11111111-1111-1111-1111-111111111111'
+  ),
+
+  -- Imágenes CR-V
+  ('42222222-2222-2222-2222-111111111111',
+   '20202020-2020-2020-2020-202020202020',
+   'https://via.placeholder.com/800x450?text=CR-V+Lateral',
+   'Honda CR-V 2022 - Vista lateral',
+   0,
+   '11111111-1111-1111-1111-111111111111'
+  ),
+  ('42222222-2222-2222-2222-222222222222',
+   '20202020-2020-2020-2020-202020202020',
+   'https://via.placeholder.com/800x450?text=CR-V+Interior',
+   'Honda CR-V 2022 - Interior',
+   1,
+   '11111111-1111-1111-1111-111111111111'
+  ),
+
+  -- Imágenes Mazda 3
+  ('43333333-3333-3333-3333-111111111111',
+   '30303030-3030-3030-3030-303030303030',
+   'https://via.placeholder.com/800x450?text=Mazda+3+Frente',
+   'Mazda 3 2020 - Vista frontal',
+   0,
+   '22222222-2222-2222-2222-222222222222'
+  ),
+  ('43333333-3333-3333-3333-222222222222',
+   '30303030-3030-3030-3030-303030303030',
+   'https://via.placeholder.com/800x450?text=Mazda+3+Interior',
+   'Mazda 3 2020 - Interior',
+   1,
+   '22222222-2222-2222-2222-222222222222'
+  )
+on conflict (id) do nothing;
+
+-- =========================================
+-- Datos de prueba para model_inquiries (consultas)
+-- =========================================
+insert into public.model_inquiries (
+  id, model_id, model_name, name, email, phone,
+  message, status, ip_address, user_agent
+)
+values
+  -- Consulta por Corolla
+  ('51111111-1111-1111-1111-111111111111',
+   '10101010-1010-1010-1010-101010101010',
+   'Toyota Corolla 2021',
+   'Juan Pérez',
+   'juan.perez@example.com',
+   '+52 55 1111 2222',
+   'Hola, me interesa el Corolla 2021. ¿Tienen planes de financiamiento?',
+   'new',
+   '200.100.10.1',
+   'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+  ),
+
+  -- Consulta por CR-V
+  ('52222222-2222-2222-2222-222222222222',
+   '20202020-2020-2020-2020-202020202020',
+   'Honda CR-V 2022',
+   'María López',
+   'maria.lopez@example.com',
+   '+52 55 3333 4444',
+   'Busco una SUV familiar, ¿la CR-V 2022 sigue disponible?',
+   'contacted',
+   '200.100.10.2',
+   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'
+  ),
+
+  -- Consulta por Mazda 3
+  ('53333333-3333-3333-3333-333333333333',
+   '30303030-3030-3030-3030-303030303030',
+   'Mazda 3 2020',
+   'Carlos Ramírez',
+   'carlos.ramirez@example.com',
+   '+52 55 5555 6666',
+   '¿Aceptan auto a cuenta para el Mazda 3 2020?',
+   'new',
+   '200.100.10.3',
+   'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)'
+  )
+on conflict (id) do nothing;
+```
+
